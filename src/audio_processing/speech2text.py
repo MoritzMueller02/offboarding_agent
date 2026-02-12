@@ -30,7 +30,7 @@ class Speech2Text:
             return audio_array, sr
         else:
             logger.error(f"File doesn't exist: {audio_path}")
-            raise FileNotFoundError(f"Audio file not found: {audio_path}")
+            raise FileNotFoundError(f"Audio File not Found: {audio_path}")
         
     def transcribe_audio(self, audio_file):
         
@@ -44,3 +44,5 @@ class Speech2Text:
         logger.info(f"Transcription complete: {result}")
         return result
 
+
+    
