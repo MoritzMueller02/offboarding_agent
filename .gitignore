@@ -1,3 +1,5 @@
+node_modules
+
 # Python-generated files
 __pycache__/
 *.py[oc]
@@ -9,4 +11,4 @@ wheels/
 # Virtual environments
 .venv
 .env
-models/xet/logs
+models/xet/logsnode_modules/
