@@ -48,6 +48,10 @@ class TestSpeech2Text:
         assert s2t.model is not None
         assert s2t.processor is not None
         
+    # Speech2Text.__init__() ruft:
+    # - Speech2TextForConditionalGeneration.from_pretrained()  ← Gibt sofort Mock zurück! 0.001s!
+    # - Speech2TextProcessor.from_pretrained()   
+        
     @pytest.mark.unit
     def test_prepare_audio_file(self, speech2text, filename = "nonexistent.mp3"):
         with pytest.raises(FileNotFoundError, match = f"Audio File not Found: {filename}"):
