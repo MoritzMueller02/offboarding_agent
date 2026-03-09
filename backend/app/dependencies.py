@@ -4,18 +4,11 @@ These are used across multiple routers.
 """
 
 from functools import lru_cache
-from typing import Annotated
 from supabase import create_client, Client
-from config import get_settings
+from app.config import get_settings
 
-# Get settings
-try:
-    from config import get_settings
-    settings = get_settings()
-    print("Import erfolgreich")
-except ImportError as e:
-    print("{e}")
-    
+settings = get_settings()
+
 
 # Supabase Client (Singleton)
 @lru_cache()
@@ -26,7 +19,7 @@ def get_supabase_client() -> Client:
     """
     return create_client(
         settings.supabase_url,
-        settings.supabase_service_key 
+        settings.supabase_service_key,
     )
 
 
@@ -37,7 +30,7 @@ def get_supabase_anon_client() -> Client:
     """
     return create_client(
         settings.supabase_url,
-        settings.supabase_anon_key
+        settings.supabase_anon_key,
     )
 
 
