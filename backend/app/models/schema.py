@@ -9,9 +9,6 @@ from typing import Optional, List
 from uuid import UUID
 
 
-# ============================================
-# Base Models (für Wiederverwendung)
-# ============================================
 
 class TimestampMixin(BaseModel):
     """Mixin for created_at/updated_at"""
@@ -19,9 +16,6 @@ class TimestampMixin(BaseModel):
     updated_at: datetime
 
 
-# ============================================
-# Employee Models
-# ============================================
 
 class EmployeeBase(BaseModel):
     """Shared employee fields"""
@@ -59,7 +53,6 @@ class Employee(EmployeeBase, TimestampMixin):
     model_config = ConfigDict(from_attributes=True)
 
 
-
 class SessionBase(BaseModel):
     """Shared session fields"""
     title: str
@@ -85,8 +78,6 @@ class Session(SessionBase, TimestampMixin):
     
     model_config = ConfigDict(from_attributes=True)
 
-
-
 class AudioUploadResponse(BaseModel):
     """Response after audio upload"""
     audio_id: UUID
@@ -97,14 +88,14 @@ class AudioUploadResponse(BaseModel):
 
 
 class TranscriptionResponse(BaseModel):
-    """Transcription result"""
-    transcription_id: UUID
+    """Transcription result — `id` from DB is aliased to `transcription_id`"""
+    transcription_id: UUID = Field(alias="id")
     audio_recording_id: UUID
     text: str
     language: str
-    confidence_score: Optional[float]
+    confidence_score: Optional[float] = None
 
-
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class SearchRequest(BaseModel):

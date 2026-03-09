@@ -22,6 +22,9 @@ class Settings(BaseSettings):
         """Computed property for models directory""" # aufrufen ohne klammer
         return self.base_dir / "models"
     
+    app_name: str = "Offboarding Agent"
+    app_version: str = "0.1.0"
+
     hf_token: str | None = None
     hf_home: str | None = None
     

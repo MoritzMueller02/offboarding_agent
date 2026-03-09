@@ -8,8 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 
-from app.config import settings
-from app.routers import sessions, audio, search, employees
+from app.config import get_settings
+from app.routers import sessions, search, employees, transcriptions, audio
+
+settings = get_settings()
 
 
 # Lifespan Events (Startup/Shutdown)
@@ -75,6 +77,13 @@ app.include_router(
     audio.router,
     prefix=f"{settings.api_v1_prefix}/audio",
     tags=["audio"]
+)
+
+app.include_router(
+    transcriptions.router,
+    prefix = f"{settings.api_v1_prefix}/transcriptions",
+    tags = ["transcriptions"]
+    
 )
 
 app.include_router(
