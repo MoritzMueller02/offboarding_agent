@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 
 from app.config import get_settings
 from app.routers import sessions, search, employees, transcriptions, audio
+from app.services.transcription import Speech2Text
 
 settings = get_settings()
 
@@ -29,9 +30,7 @@ async def lifespan(app: FastAPI):
     print(f"📍 Environment: {'Development' if settings.debug else 'Production'}")
     print(f"🔗 Supabase: {settings.supabase_url}")
     
-    # Load models here (optional)
-    # global transcription_model
-    # transcription_model = load_whisper_model()
+    app.state.speech_model = Speech2Text()
     
     yield  # App runs here
     

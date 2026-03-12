@@ -140,3 +140,18 @@ class TestAudioRouter:
         response = client.get(f"/api/v1/audio/{uuid4()}")
 
         assert response.status_code == 404
+
+
+# ============================================================
+# Transcription Router Tests
+# ============================================================
+
+class TestTranscriptionRouter:
+    
+    def test_transcription_not_found(self, client, mock_db):
+        db_returns(mock_db, [])
+        
+        response = client.get(f"/api/v1/transcriptions/{uuid4()}")
+        
+        assert response.status_code == 404
+        assert response.json()["detail"] == "Transcription not found"

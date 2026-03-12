@@ -92,7 +92,7 @@ class TranscriptionResponse(BaseModel):
     transcription_id: UUID = Field(alias="id")
     audio_recording_id: UUID
     text: str
-    language: str
+    language:Optional[str] = None
     confidence_score: Optional[float] = None
 
     model_config = ConfigDict(populate_by_name=True)

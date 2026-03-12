@@ -4,6 +4,7 @@ from datasets import load_dataset
 from pathlib import Path
 import librosa
 import logging
+import io
 
 
 logging.basicConfig(level = logging.INFO)
@@ -20,22 +21,13 @@ class Speech2Text:
         logging.info("Models initiated")
         
     
-    def prepare_audio(self, audio_file):
+    def prepare_audio(self, audio_bytes: bytes):
+        buffer = io.BytesIO(audio_bytes)        
+        audio_array, sr = librosa.load(buffer, sr = 16000)
+        return audio_array, sr
         
-        audio_path = Path(audio_file)
-        
-        if audio_path.exists():
-            logger.info(f"File exists: {audio_path}")
-            audio_array, sr = librosa.load(audio_path, sr = 16000)
-            return audio_array, sr
-        else:
-            logger.error(f"File doesn't exist: {audio_path}")
-            raise FileNotFoundError(f"Audio File not Found: {audio_path}")
-        
-    def transcribe_audio(self, audio_file):
-        
-        audio_array, sr = self.prepare_audio(audio_file)
-        
+    def transcribe_audio(self, audio_bytes: bytes):
+        audio_array, sr = self.prepare_audio(audio_bytes)
         inputs = self.processor(audio_array, sampling_rate = sr, return_tensors = "pt")
         generated_ids = self.model.generate(inputs["input_features"], attention_mask=inputs["attention_mask"])
         transcription = self.processor.batch_decode(generated_ids, skip_special_tokens=True)
