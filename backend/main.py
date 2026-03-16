@@ -9,7 +9,6 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 
 from app.config import get_settings
-from app.services.transcription import Speech2Text
 from app.routers import sessions_routers, search_routers, employees_routers, transcriptions_routers, audio_routers
 
 settings = get_settings()
@@ -29,7 +28,8 @@ async def lifespan(app: FastAPI):
     print(f"🚀 Starting {settings.app_name} v{settings.app_version}")
     print(f"📍 Environment: {'Development' if settings.debug else 'Production'}")
     print(f"🔗 Supabase: {settings.supabase_url}")
-    
+
+    from app.services.transcription import Speech2Text
     app.state.speech_model = Speech2Text()
     
     yield  # App runs here
