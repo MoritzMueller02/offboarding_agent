@@ -155,3 +155,21 @@ class TestTranscriptionRouter:
         
         assert response.status_code == 404
         assert response.json()["detail"] == "Transcription not found"
+        
+        
+    def test_transcription_found(self, client, mock_db):
+        transcription_id = uuid4()
+        db_returns(mock_db, [{
+            "transcription_id" : transcription_id,
+            "audio_recording_id" : transcription_id,
+            "text": "abbb",
+            "language" : None,
+            "confidence_score" : None
+        }])
+        
+        response = client.get(f"/api/v1/transcriptions/{transcription_id}")
+        
+        assert response.status_code == 200
+        assert response.json()["text"] == "abbb"
+
+        

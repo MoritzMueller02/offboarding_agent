@@ -9,8 +9,8 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 
 from app.config import get_settings
-from app.routers import sessions, search, employees, transcriptions, audio
 from app.services.transcription import Speech2Text
+from app.routers import sessions_routers, search_routers, employees_routers, transcriptions_routers, audio_routers
 
 settings = get_settings()
 
@@ -61,32 +61,31 @@ app.add_middleware(
 
 # Include Routers
 app.include_router(
-    employees.router,
+    employees_routers.router,
     prefix=f"{settings.api_v1_prefix}/employees",
     tags=["employees"]
 )
 
 app.include_router(
-    sessions.router,
+    sessions_routers.router,
     prefix=f"{settings.api_v1_prefix}/sessions",
     tags=["sessions"]
 )
 
 app.include_router(
-    audio.router,
+    audio_routers.router,
     prefix=f"{settings.api_v1_prefix}/audio",
     tags=["audio"]
 )
 
 app.include_router(
-    transcriptions.router,
-    prefix = f"{settings.api_v1_prefix}/transcriptions",
-    tags = ["transcriptions"]
-    
+    transcriptions_routers.router,
+    prefix=f"{settings.api_v1_prefix}/transcriptions",
+    tags=["transcriptions"]
 )
 
 app.include_router(
-    search.router,
+    search_routers.router,
     prefix=f"{settings.api_v1_prefix}/search",
     tags=["search"]
 )
