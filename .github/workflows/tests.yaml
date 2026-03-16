@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         uv pip install --system fastapi pydantic-settings supabase python-multipart httpx uvicorn
-        uv pip install --system pytest pytest-cov pytest-moc
+        uv pip install --system pytest pytest-cov pytest-mock
     
     - name: Run tests
       run: |
