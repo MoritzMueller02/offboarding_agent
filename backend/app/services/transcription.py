@@ -1,6 +1,4 @@
-import torch
 from transformers import Speech2TextProcessor, Speech2TextForConditionalGeneration
-from datasets import load_dataset
 from pathlib import Path
 import librosa
 import logging
@@ -27,6 +25,7 @@ class Speech2Text:
         return audio_array, sr
         
     def transcribe_audio(self, audio_bytes: bytes):
+        import torch
         audio_array, sr = self.prepare_audio(audio_bytes)
         inputs = self.processor(audio_array, sampling_rate = sr, return_tensors = "pt")
         generated_ids = self.model.generate(inputs["input_features"], attention_mask=inputs["attention_mask"])
