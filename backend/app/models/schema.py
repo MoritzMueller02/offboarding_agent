@@ -5,7 +5,7 @@ These define the shape of data in your API.
 
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Literal
 from uuid import UUID
 
 
@@ -85,6 +85,7 @@ class AudioUploadResponse(BaseModel):
     file_size: int
     storage_path: str
     processing_status: str
+    storage_bucket: str = "audio-recordings"
 
 
 class TranscriptionResponse(BaseModel):
@@ -96,7 +97,19 @@ class TranscriptionResponse(BaseModel):
     confidence_score: Optional[float] = None
 
     model_config = ConfigDict(populate_by_name=True)
-
+    
+    
+class DocumentUploadResponse(BaseModel):
+    """Response after uploading a document"""
+    document_id: UUID
+    session_id: UUID
+    storage_path: str
+    file_name: str
+    storage_bucket: str = "documents"
+    document_type: Optional[Literal['pdf', 'docx', 'txt', 'markdown', 'presentation', 'spreadsheet', 'other']] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
+    processing_status: Literal['uploaded', 'queued', 'extracting', 'completed', 'failed'] = 'uploaded'
 
 class SearchRequest(BaseModel):
     """Knowledge search request"""

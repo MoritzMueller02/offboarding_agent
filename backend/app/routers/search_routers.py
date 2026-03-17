@@ -5,7 +5,7 @@ from uuid import UUID
 from app.dependencies import get_db
 from app.db.repositories.knowledge_chunks_repository import KnowledgeChunkRepository
 from app.models.schema import SearchRequest, SearchResponse, SearchResult
-from app.services.embeddings import generate_embedding
+from app.services.embeddings import get_embedding_service
 
 router = APIRouter()
 
@@ -17,7 +17,7 @@ def search_knowledge(payload: SearchRequest, db: Client = Depends(get_db)):
     Requires the `match_chunks` SQL function in Supabase and a configured embedding service.
     """
     try:
-        embedding = generate_embedding(payload.query)
+        embedding = get_embedding_service().generate_embedding(payload.query)
     except NotImplementedError as e:
         raise HTTPException(status_code=501, detail=str(e))
 
